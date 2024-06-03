@@ -2,8 +2,6 @@ package com.pousada.dto;
 
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Data
 public class HospedeDTO {
 
@@ -11,6 +9,12 @@ public class HospedeDTO {
 
     private String nome;
 
+    private String sobrenome;
+
     private String cpf;
+
+    private String email;
+
+    private String cep;
 
 }

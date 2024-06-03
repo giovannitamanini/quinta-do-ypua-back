@@ -5,9 +5,11 @@ import com.pousada.domain.repository.HospedeRepository;
 import com.pousada.dto.HospedeDTO;
 import com.pousada.exception.HospedeNaoEncontradoException;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +24,12 @@ public class HospedeService {
     }
 
     public HospedeDTO criarHospede(HospedeDTO hospedeDTO) {
+        HospedeEntity hospedeEntity = modelMapper.map(hospedeDTO, HospedeEntity.class);
+        HospedeEntity hospedeEntitySalvo = hospedeRepository.save(hospedeEntity);
+        return modelMapper.map(hospedeEntitySalvo, HospedeDTO.class);
+    }
+
+    public HospedeDTO atualizarHospede(HospedeDTO hospedeDTO) {
         HospedeEntity hospedeEntity = modelMapper.map(hospedeDTO, HospedeEntity.class);
         HospedeEntity hospedeEntitySalvo = hospedeRepository.save(hospedeEntity);
         return modelMapper.map(hospedeEntitySalvo, HospedeDTO.class);
@@ -50,8 +58,8 @@ public class HospedeService {
     public List<HospedeDTO> buscarTodosHospedes() {
         List<HospedeEntity> hospedeEntities = hospedeRepository.findAll();
 
-        if (hospedeEntities.isEmpty())
-            throw new HospedeNaoEncontradoException("Nenhum hóspede está registrado!");
+//        if (hospedeEntities.isEmpty())
+//            throw new HospedeNaoEncontradoException("Nenhum hóspede está registrado!");
 
         List<HospedeDTO> hospedeDTOs = hospedeEntities.stream()
                 .map(hospedeEntity -> modelMapper.map(hospedeEntity, HospedeDTO.class))
@@ -59,6 +67,16 @@ public class HospedeService {
 
         return hospedeDTOs;
     }
+
+//    public ResponseEntity<Object> deletarHospedePorId(Long id) {
+//        boolean hospedeExiste = hospedeRepository.existsById(id);
+//
+//        if (hospedeExiste) {
+//            hospedeRepository.deleteById(id);
+//            return ResponseEntity.noContent().build();
+//        }
+//        return ResponseEntity.notFound().build();
+//    }
 
     public void deletarHospedePorId(Long id) {
         boolean hospedeExiste = hospedeRepository.existsById(id);
@@ -69,5 +87,6 @@ public class HospedeService {
             throw new HospedeNaoEncontradoException("O hóspede com o ID " + id + " não existe.");
         }
     }
+
 
 }

@@ -83,7 +83,7 @@ public class ReservaService {
         if (reservaEntity == null)
             return false;
 
-        if (reservaEntity.getStatusReserva() == StatusReservaEnum.CONFIRMADA)
+        if (reservaEntity.getStatusReserva() == StatusReservaEnum.EM_ANDAMENTO)
             return false;
 
         return true;

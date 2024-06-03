@@ -18,18 +18,18 @@ CREATE TABLE IF NOT EXISTS informacao_pousada (
 CREATE TABLE IF NOT EXISTS hospede (
 	id BIGINT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(45) NOT NULL,
-    cpf VARCHAR(14) NOT NULL
+    sobrenome VARCHAR(45) NOT NULL,
+    cpf VARCHAR(14) NOT NULL,
+    email VARCHAR(45) NOT NULL,
+    cep VARCHAR(10) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS acomodacao (
 	id INT PRIMARY KEY,
-    tipo VARCHAR(100) NOT NULL,
+    nome VARCHAR(100) NOT NULL,
     valor_diaria DECIMAL(6,2) NOT NULL,
-	descricao_hospedes VARCHAR(50) NOT NULL,
-    descricao_camas VARCHAR(50) DEFAULT "-",
-    mais_informacoes VARCHAR(1000) NOT NULL,
-    amenidades VARCHAR(500) NOT NULL,
-	condicoes VARCHAR(200) NOT NULL
+	quantidade_hospedes INT NOT NULL,
+    descricao_camas VARCHAR(50) DEFAULT "-"
 );
 
 CREATE TABLE IF NOT EXISTS reserva (

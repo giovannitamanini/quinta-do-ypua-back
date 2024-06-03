@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +22,15 @@ public class HospedeController {
     @Operation(summary = "Cadastra um novo hóspede")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public HospedeDTO criarHospede(@RequestBody HospedeDTO hospede) {
-        return hospedeService.criarHospede(hospede);
+    public HospedeDTO criarHospede(@RequestBody HospedeDTO hospedeDTO) {
+        return hospedeService.criarHospede(hospedeDTO);
+    }
+
+    @Operation(summary = "Atualiza o cadastro de um hóspede")
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public HospedeDTO atualizarHospede(@RequestBody HospedeDTO hospedeDTO) {
+        return hospedeService.atualizarHospede(hospedeDTO);
     }
 
     @Operation(summary = "Busca hóspede pelo Id de registro")
@@ -33,9 +41,9 @@ public class HospedeController {
     }
 
     @Operation(summary = "Busca hóspedes pelo primeiro nome")
-    @GetMapping("/{nome}")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<HospedeDTO> buscarHospedesPorNome(@PathVariable String nome) {
+    public List<HospedeDTO> buscarHospedesPorNome(@RequestParam(value = "nome") String nome) {
         return hospedeService.buscarHospedesPorNome(nome);
     }
 
@@ -45,6 +53,13 @@ public class HospedeController {
     public List<HospedeDTO> buscarTodosHospedes() {
         return hospedeService.buscarTodosHospedes();
     }
+
+//    @Operation(summary = "Faz a exclusão do cadastro do hóspede")
+//    @DeleteMapping("/{id}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public ResponseEntity<Object> deletarHospedePorId(@PathVariable Long id) {
+//        return hospedeService.deletarHospedePorId(id);
+//    }
 
     @Operation(summary = "Faz a exclusão do cadastro do hóspede")
     @DeleteMapping("/{id}")

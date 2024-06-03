@@ -16,8 +16,6 @@ public class ReservaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer idFuncionario;
-
     private Long idHospede;
 
     private Integer idAcomodacao;

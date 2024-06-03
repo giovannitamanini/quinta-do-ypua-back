@@ -7,20 +7,12 @@ public class AcomodacaoDTO {
 
     private Integer id;
 
-    private Integer numero;
-
-    private String tipo;
+    private String nome;
 
     private Double valorDiaria;
 
-    private String descricaoHospedes;
+    private Integer quantidadeHospedes;
 
     private String descricaoCamas;
-
-    private String maisInformacoes;
-
-    private String amenidades;
-
-    private String condicoes;
 
 }

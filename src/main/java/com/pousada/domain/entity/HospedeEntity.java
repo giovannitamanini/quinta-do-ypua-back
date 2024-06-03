@@ -18,5 +18,12 @@ public class HospedeEntity {
 
     private String nome;
 
+    private String sobrenome;
+
     private String cpf;
+
+    private String email;
+
+    private String cep;
+
 }

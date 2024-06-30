@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @Entity(name = "reserva")
@@ -20,9 +19,9 @@ public class ReservaEntity {
 
     private Integer idAcomodacao;
 
-    private LocalDateTime dataHora;
+    private LocalDate dataInicial;
 
-    private Integer numeroPernoites; //qtdDiarias
+    private Integer qtdDiarias;
 
     @Enumerated(EnumType.STRING)
     private StatusReservaEnum statusReserva;
@@ -30,9 +29,9 @@ public class ReservaEntity {
     @Enumerated(EnumType.STRING)
     private StatusPagamentoEnum statusPagamento;
 
-    private LocalDate checkIn;
+    private LocalDate dataCheckIn;
 
-    private LocalDate checkOut;
+    private LocalDate dataCheckOut;
 
     private Double valorTotal;
 

@@ -46,8 +46,8 @@ public class AcomodacaoService {
     public List<AcomodacaoDTO> buscarTodasAcomodacoes() {
         List<AcomodacaoEntity> acomodacaoEntities = acomodacaoRepository.findAll();
 
-        if (acomodacaoEntities.isEmpty())
-            throw new AcomodacaoNaoEncontradaException("Nenhuma acomodação está registrada!");
+        //if (acomodacaoEntities.isEmpty())
+       //     throw new AcomodacaoNaoEncontradaException("Nenhuma acomodação está registrada!");
 
         List<AcomodacaoDTO> acomodacaoDTOs = acomodacaoEntities.stream()
                 .map(acomodacaoEntity -> modelMapper.map(acomodacaoEntity, AcomodacaoDTO.class))

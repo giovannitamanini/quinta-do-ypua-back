@@ -25,6 +25,13 @@ public class ReservaController {
         return reservaService.criarReserva(reserva);
     }
 
+    @Operation(summary = "Atualiza o cadastro de uma reserva")
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ReservaDTO atualizarReserva(@RequestBody ReservaDTO reservaDTO) {
+        return reservaService.atualizarReserva(reservaDTO);
+    }
+
     @Operation(summary = "Busca uma reserva pelo Id de registro da mesma")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

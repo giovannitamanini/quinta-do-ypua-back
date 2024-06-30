@@ -34,9 +34,21 @@ public class ReservaService {
         }
 
         ReservaEntity reservaEntity = modelMapper.map(reservaDTO, ReservaEntity.class);
-        reservaEntity.setNumeroPernoites((int) ChronoUnit.DAYS.between(reservaEntity.getCheckIn(), reservaEntity.getCheckOut()));
+        reservaEntity.setQtdDiarias((int) ChronoUnit.DAYS.between(reservaEntity.getDataCheckIn(), reservaEntity.getDataCheckOut()));
         double custoDiariaAcomodacao = acomodacaoRepository.buscarValorDiariaPorId(reservaEntity.getIdAcomodacao());
-        double custoReserva = custoDiariaAcomodacao * reservaEntity.getNumeroPernoites();
+        double custoReserva = custoDiariaAcomodacao * reservaEntity.getQtdDiarias();
+        reservaEntity.setValorTotal(custoReserva);
+        ReservaEntity reservaEntitySalva = reservaRepository.save(reservaEntity);
+
+        return modelMapper.map(reservaEntitySalva, ReservaDTO.class);
+    }
+
+    public ReservaDTO atualizarReserva(ReservaDTO reservaDTO) {
+
+        ReservaEntity reservaEntity = modelMapper.map(reservaDTO, ReservaEntity.class);
+        reservaEntity.setQtdDiarias((int) ChronoUnit.DAYS.between(reservaEntity.getDataCheckIn(), reservaEntity.getDataCheckOut()));
+        double custoDiariaAcomodacao = acomodacaoRepository.buscarValorDiariaPorId(reservaEntity.getIdAcomodacao());
+        double custoReserva = custoDiariaAcomodacao * reservaEntity.getQtdDiarias();
         reservaEntity.setValorTotal(custoReserva);
         ReservaEntity reservaEntitySalva = reservaRepository.save(reservaEntity);
 
@@ -53,8 +65,8 @@ public class ReservaService {
     public List<ReservaDTO> buscarTodasReservas() {
         List<ReservaEntity> reservaEntities = reservaRepository.findAll();
 
-        if (reservaEntities.isEmpty())
-            throw new ReservaNaoEncontradaException("Nenhuma reserva está registrada!");
+       // if (reservaEntities.isEmpty())
+       //     throw new ReservaNaoEncontradaException("Nenhuma reserva está registrada!");
 
         List<ReservaDTO> reservaDTOs = reservaEntities.stream()
                 .map(reservaEntity -> modelMapper.map(reservaEntity, ReservaDTO.class))
@@ -76,8 +88,8 @@ public class ReservaService {
     private boolean existeReservaNoPeriodo(ReservaDTO novaReserva) {
         ReservaEntity reservaEntity = reservaRepository.buscarReservaPorAcomodacaoEPeriodo(
                 novaReserva.getIdAcomodacao(),
-                novaReserva.getCheckIn(),
-                novaReserva.getCheckOut()
+                novaReserva.getDataCheckIn(),
+                novaReserva.getDataCheckOut()
         );
 
         if (reservaEntity == null)

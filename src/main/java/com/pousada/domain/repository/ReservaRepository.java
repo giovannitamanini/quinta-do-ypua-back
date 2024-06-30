@@ -15,15 +15,15 @@ public interface ReservaRepository extends CrudRepository<ReservaEntity, Long> {
     List<ReservaEntity> findAll();
 
     @Query(value = "SELECT * FROM reserva WHERE id_acomodacao = :idAcomodacao AND (" +
-            ":checkIn >= check_in AND :checkOut <= check_out " +
-            "OR :checkIn <= check_in AND :checkOut >= check_out " +
-            "OR :checkIn > check_in AND :checkIn < check_out " +
-            "OR :checkOut > check_in AND :checkOut < check_out)",
+            ":dataCheckIn >= data_check_in AND :dataCheckOut <= data_check_out " +
+            "OR :dataCheckIn <= data_check_in AND :dataCheckOut >= data_check_out " +
+            "OR :dataCheckIn > data_check_in AND :dataCheckIn < data_check_out " +
+            "OR :dataCheckOut > data_check_in AND :dataCheckOut < data_check_out)",
             nativeQuery = true)
     ReservaEntity buscarReservaPorAcomodacaoEPeriodo(
             @Param("idAcomodacao") Integer idAcomodacao,
-            @Param("checkIn") LocalDate checkIn,
-            @Param("checkOut") LocalDate checkOut);
+            @Param("dataCheckIn") LocalDate dataCheckIn,
+            @Param("dataCheckOut") LocalDate dataCheckOut);
 
     @Query(value = "SELECT * FROM reserva WHERE status_reserva = 'EM_ESPERA'",
             nativeQuery = true)

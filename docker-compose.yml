@@ -6,13 +6,14 @@ services:
     container_name: mysql
     environment:
       - MYSQL_ROOT_PASSWORD=12345
+      - MYSQL_DATABASE=pousada
     ports:
       - "3308:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 20s
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "database"]
+      timeout: 40s
       retries: 10
 
   app:

@@ -21,7 +21,7 @@ public class AcomodacaoController {
     @Autowired
     private final AcomodacaoService acomodacaoService;
 
-//    @Operation(summary = "Cadastra uma nova acomodação")
+    @Operation(summary = "Cadastra uma nova acomodação")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AcomodacaoDTO criarAcomodacao(@RequestBody AcomodacaoDTO acomodacaoDTO) {

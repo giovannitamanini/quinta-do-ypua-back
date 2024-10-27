@@ -2,6 +2,8 @@ package com.pousada.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class HospedeDTO {
 
@@ -15,6 +17,20 @@ public class HospedeDTO {
 
     private String email;
 
+    private String telefone;
+
     private String cep;
+
+    private String endereco;
+
+    private String cidade;
+
+    private String estado;
+
+    private String pais;
+
+    private LocalDateTime dataCriacao;
+
+    private LocalDateTime dataAtualizacao;
 
 }

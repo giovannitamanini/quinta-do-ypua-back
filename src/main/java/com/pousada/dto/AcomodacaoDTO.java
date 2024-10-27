@@ -2,6 +2,9 @@ package com.pousada.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Data
 public class AcomodacaoDTO {
 
@@ -9,10 +12,16 @@ public class AcomodacaoDTO {
 
     private String nome;
 
-    private Double valorDiaria;
+    private String descricao;
+
+    private BigDecimal valorDiaria;
 
     private Integer quantidadeHospedes;
 
-    private String descricaoCamas;
+    private Boolean disponivel = true;
+
+    private LocalDateTime dataCriacao;
+
+    private LocalDateTime dataAtualizacao;
 
 }

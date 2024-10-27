@@ -11,11 +11,13 @@ import java.time.LocalDateTime;
 public class AcomodacaoItemEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne
     @JoinColumn(name = "id_acomodacao", nullable = false)
     private AcomodacaoEntity acomodacao;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "id_item", nullable = false)
     private ItemEntity item;

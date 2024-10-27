@@ -1,7 +1,6 @@
 package com.pousada.controller;
 
 import com.pousada.dto.AcomodacaoDTO;
-import com.pousada.dto.HospedeDTO;
 import com.pousada.service.AcomodacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/acomodacoes")
+@RequestMapping("/acomodacao")
 @RequiredArgsConstructor
-@Tag(name = "Acomodações")
+@Tag(name = "Acomodação")
 public class AcomodacaoController {
 
     @Autowired

@@ -94,7 +94,7 @@ public class ReservaService {
 
     private boolean existeReservaNoPeriodo(ReservaDTO novaReserva) {
         ReservaEntity reservaEntity = reservaRepository.buscarReservaPorAcomodacaoEPeriodo(
-                novaReserva.getIdAcomodacao(),
+                novaReserva.getAcomodacao(),
                 novaReserva.getDataCheckIn(),
                 novaReserva.getDataCheckOut()
         );

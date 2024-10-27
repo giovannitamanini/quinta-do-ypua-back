@@ -1,5 +1,6 @@
 package com.pousada.domain.repository;
 
+import com.pousada.domain.entity.AcomodacaoEntity;
 import com.pousada.domain.entity.ReservaEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -21,7 +22,7 @@ public interface ReservaRepository extends CrudRepository<ReservaEntity, Long> {
             "OR :dataCheckOut > data_check_in AND :dataCheckOut < data_check_out)",
             nativeQuery = true)
     ReservaEntity buscarReservaPorAcomodacaoEPeriodo(
-            @Param("idAcomodacao") Integer idAcomodacao,
+            @Param("idAcomodacao") AcomodacaoEntity idAcomodacao,
             @Param("dataCheckIn") LocalDate dataCheckIn,
             @Param("dataCheckOut") LocalDate dataCheckOut);
 

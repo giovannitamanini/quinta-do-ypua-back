@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -15,5 +16,5 @@ public interface AcomodacaoRepository extends CrudRepository<AcomodacaoEntity, I
 
     @Query(value = "SELECT valor_diaria FROM acomodacao WHERE id = :id",
             nativeQuery = true)
-    double buscarValorDiariaPorId(@Param("id") Integer id);
+    BigDecimal buscarValorDiariaPorId(@Param("id") AcomodacaoEntity id);
 }

@@ -17,11 +17,11 @@ CREATE TABLE IF NOT EXISTS funcao (
 );
 
 CREATE TABLE IF NOT EXISTS usuario_funcao (
+    id INT PRIMARY KEY AUTO_INCREMENT,
     usuario_id INT NOT NULL,
     funcao_id INT NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuario(id),
-    FOREIGN KEY (funcao_id) REFERENCES funcao(id),
-    PRIMARY KEY (usuario_id, funcao_id)
+    FOREIGN KEY (funcao_id) REFERENCES funcao(id)
 );
 
 CREATE TABLE IF NOT EXISTS hospede (
@@ -41,15 +41,15 @@ CREATE TABLE IF NOT EXISTS acomodacao (
 );
 
 CREATE TABLE IF NOT EXISTS item (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
     descricao VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS acomodacao_item (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
     id_acomodacao INT NOT NULL,
-    id_item INT NOT NULL,
+    id_item BIGINT NOT NULL,
     quantidade INT NOT NULL,
-    PRIMARY KEY (id_acomodacao, id_item),
     FOREIGN KEY (id_acomodacao) REFERENCES acomodacao(id),
     FOREIGN KEY (id_item) REFERENCES item(id)
 );

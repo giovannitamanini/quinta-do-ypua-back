@@ -4,9 +4,10 @@ import com.pousada.domain.entity.AcomodacaoItemEntity;
 import com.pousada.domain.repository.AcomodacaoItemRepository;
 import com.pousada.dto.AcomodacaoItemDTO;
 import com.pousada.exception.AcomodacaoItemNaoEncontradaException;
-import com.pousada.exception.AcomodacaoNaoEncontradaException;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AcomodacaoItemService {
 
     private final ModelMapper modelMapper;

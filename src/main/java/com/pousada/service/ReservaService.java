@@ -10,6 +10,7 @@ import com.pousada.exception.ReservaNaoEncontradaException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,8 +36,8 @@ public class ReservaService {
 
         ReservaEntity reservaEntity = modelMapper.map(reservaDTO, ReservaEntity.class);
         reservaEntity.setQtdDiarias((int) ChronoUnit.DAYS.between(reservaEntity.getDataCheckIn(), reservaEntity.getDataCheckOut()));
-        double custoDiariaAcomodacao = acomodacaoRepository.buscarValorDiariaPorId(reservaEntity.getIdAcomodacao());
-        double custoReserva = custoDiariaAcomodacao * reservaEntity.getQtdDiarias();
+        BigDecimal custoDiariaAcomodacao = acomodacaoRepository.buscarValorDiariaPorId(reservaEntity.getAcomodacao());
+        BigDecimal custoReserva = custoDiariaAcomodacao.multiply(BigDecimal.valueOf(reservaEntity.getQtdDiarias()));
         reservaEntity.setValorTotal(custoReserva);
         ReservaEntity reservaEntitySalva = reservaRepository.save(reservaEntity);
 
@@ -47,32 +48,12 @@ public class ReservaService {
 
         ReservaEntity reservaEntity = modelMapper.map(reservaDTO, ReservaEntity.class);
         reservaEntity.setQtdDiarias((int) ChronoUnit.DAYS.between(reservaEntity.getDataCheckIn(), reservaEntity.getDataCheckOut()));
-        double custoDiariaAcomodacao = acomodacaoRepository.buscarValorDiariaPorId(reservaEntity.getIdAcomodacao());
-        double custoReserva = custoDiariaAcomodacao * reservaEntity.getQtdDiarias();
+        BigDecimal custoDiariaAcomodacao = acomodacaoRepository.buscarValorDiariaPorId(reservaEntity.getAcomodacao());
+        BigDecimal custoReserva = custoDiariaAcomodacao.multiply(BigDecimal.valueOf(reservaEntity.getQtdDiarias()));
         reservaEntity.setValorTotal(custoReserva);
         ReservaEntity reservaEntitySalva = reservaRepository.save(reservaEntity);
 
         return modelMapper.map(reservaEntitySalva, ReservaDTO.class);
-    }
-
-    public ReservaDTO buscarReservaPorId(Long id) {
-        ReservaEntity reservaEntity = reservaRepository.findById(id)
-                .orElseThrow(() -> new ReservaNaoEncontradaException("A reserva com o ID " + id + " não existe."));
-
-        return modelMapper.map(reservaEntity, ReservaDTO.class);
-    }
-
-    public List<ReservaDTO> buscarTodasReservas() {
-        List<ReservaEntity> reservaEntities = reservaRepository.findAll();
-
-       // if (reservaEntities.isEmpty())
-       //     throw new ReservaNaoEncontradaException("Nenhuma reserva está registrada!");
-
-        List<ReservaDTO> reservaDTOs = reservaEntities.stream()
-                .map(reservaEntity -> modelMapper.map(reservaEntity, ReservaDTO.class))
-                .collect(Collectors.toList());
-
-        return reservaDTOs;
     }
 
     public void deletarReservaPorId(Long id) {
@@ -85,6 +66,32 @@ public class ReservaService {
         }
     }
 
+    public ReservaDTO buscarReservaPorId(Long id) {
+        ReservaEntity reservaEntity = reservaRepository.findById(id)
+                .orElseThrow(() -> new ReservaNaoEncontradaException("A reserva com o ID " + id + " não existe."));
+
+        return modelMapper.map(reservaEntity, ReservaDTO.class);
+    }
+
+    public List<ReservaDTO> buscarTodasReservas() {
+        List<ReservaEntity> reservaEntities = reservaRepository.findAll();
+
+        return reservaEntities.stream()
+                .map(reservaEntity -> modelMapper.map(reservaEntity, ReservaDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<ReservaDTO> buscarReservasEmEspera() {
+        List<ReservaEntity> reservaEntities = reservaRepository.buscarReservasEmEspera();
+
+        if (reservaEntities.isEmpty())
+            throw new ReservaNaoEncontradaException("Nenhuma reserva em espera!");
+
+        return reservaEntities.stream()
+                .map(reservaEntity -> modelMapper.map(reservaEntity, ReservaDTO.class))
+                .collect(Collectors.toList());
+    }
+
     private boolean existeReservaNoPeriodo(ReservaDTO novaReserva) {
         ReservaEntity reservaEntity = reservaRepository.buscarReservaPorAcomodacaoEPeriodo(
                 novaReserva.getIdAcomodacao(),
@@ -95,23 +102,7 @@ public class ReservaService {
         if (reservaEntity == null)
             return false;
 
-        if (reservaEntity.getStatusReserva() == StatusReservaEnum.EM_ANDAMENTO)
-            return false;
-
-        return true;
-    }
-
-    public List<ReservaDTO> buscarReservasEmEspera() {
-        List<ReservaEntity> reservaEntities = reservaRepository.buscarReservasEmEspera();
-
-        if (reservaEntities.isEmpty())
-            throw new ReservaNaoEncontradaException("Nenhuma reserva em espera!");
-
-        List<ReservaDTO> reservaDTOs = reservaEntities.stream()
-                .map(reservaEntity -> modelMapper.map(reservaEntity, ReservaDTO.class))
-                .collect(Collectors.toList());
-
-        return reservaDTOs;
+        return reservaEntity.getStatusReserva() != StatusReservaEnum.EM_ANDAMENTO;
     }
 
 }

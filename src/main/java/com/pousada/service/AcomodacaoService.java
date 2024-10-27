@@ -36,6 +36,16 @@ public class AcomodacaoService {
         return modelMapper.map(acomodacaoEntitySalva, AcomodacaoDTO.class);
     }
 
+    public void deletarAcomodacaoPorId(Integer id) {
+        boolean acomodacaoExiste = acomodacaoRepository.existsById(id);
+
+        if (acomodacaoExiste) {
+            acomodacaoRepository.deleteById(id);
+        } else {
+            throw new AcomodacaoNaoEncontradaException("A acomodacao com o ID " + id + " não existe.");
+        }
+    }
+
     public AcomodacaoDTO buscarAcomodacaoPorId(Integer id) {
         AcomodacaoEntity acomodacaoEntity = acomodacaoRepository.findById(id)
                 .orElseThrow(() -> new AcomodacaoNaoEncontradaException("A acomodação com ID " + id + " não existe."));
@@ -46,24 +56,9 @@ public class AcomodacaoService {
     public List<AcomodacaoDTO> buscarTodasAcomodacoes() {
         List<AcomodacaoEntity> acomodacaoEntities = acomodacaoRepository.findAll();
 
-        //if (acomodacaoEntities.isEmpty())
-       //     throw new AcomodacaoNaoEncontradaException("Nenhuma acomodação está registrada!");
-
-        List<AcomodacaoDTO> acomodacaoDTOs = acomodacaoEntities.stream()
+        return acomodacaoEntities.stream()
                 .map(acomodacaoEntity -> modelMapper.map(acomodacaoEntity, AcomodacaoDTO.class))
                 .collect(Collectors.toList());
-
-        return acomodacaoDTOs;
-    }
-
-    public void deletarAcomodacaoPorId(Integer id) {
-        boolean acomodacaoExiste = acomodacaoRepository.existsById(id);
-
-        if (acomodacaoExiste) {
-            acomodacaoRepository.deleteById(id);
-        } else {
-            throw new AcomodacaoNaoEncontradaException("A acomodacao com o ID " + id + " não existe.");
-        }
     }
 
 }

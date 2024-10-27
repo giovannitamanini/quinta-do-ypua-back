@@ -1,29 +1,40 @@
 package com.pousada.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Data
-@Entity(name = "acomodacao")
+@Entity
+@Table(name = "acomodacao")
 public class AcomodacaoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
+    @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    private Double valorDiaria;
+    @Column(name = "descricao", columnDefinition = "TEXT")
+    private String descricao;
 
+    @Column(name = "valor_diaria", nullable = false)
+    private BigDecimal valorDiaria;
+
+    @Column(name = "quantidade_hospedes", nullable = false)
     private Integer quantidadeHospedes;
 
-    private String descricaoCamas;
+    @Column(name = "disponivel", nullable = false)
+    private Boolean disponivel = true;
+
+    @Column(name = "data_criacao", updatable = false)
+    private LocalDateTime dataCriacao;
+
+    @Column(name = "data_atualizacao")
+    private LocalDateTime dataAtualizacao;
 
 }

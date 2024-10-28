@@ -42,7 +42,7 @@ public class AcomodacaoService {
         if (acomodacaoExiste) {
             acomodacaoRepository.deleteById(id);
         } else {
-            throw new AcomodacaoNaoEncontradaException("A acomodacao com o ID " + id + " não existe.");
+            throw new AcomodacaoNaoEncontradaException("A acomodação com o ID " + id + " não existe.");
         }
     }
 

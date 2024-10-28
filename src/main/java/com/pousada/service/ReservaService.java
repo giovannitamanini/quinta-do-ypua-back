@@ -20,7 +20,6 @@ public class ReservaService {
 
     private final ModelMapper modelMapper;
     private final ReservaRepository reservaRepository;
-
     private final AcomodacaoRepository acomodacaoRepository;
 
     public ReservaService(ModelMapper modelMapper, ReservaRepository reservaRepository, AcomodacaoRepository acomodacaoRepository) {

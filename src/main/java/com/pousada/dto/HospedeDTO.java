@@ -21,7 +21,9 @@ public class HospedeDTO {
 
     private String cep;
 
-    private String endereco;
+    private String logradouro;
+
+    private String bairro;
 
     private String cidade;
 

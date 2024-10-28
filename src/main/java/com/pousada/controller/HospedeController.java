@@ -47,14 +47,14 @@ public class HospedeController {
     }
 
     @Operation(summary = "Busca hóspedes pelo nome", method = "GET")
-    @GetMapping()
+    @GetMapping("/{nome}")
     @ResponseStatus(HttpStatus.OK)
     public List<HospedeDTO> buscarHospedesPorNome(@RequestParam(value = "nome") String nome) {
         return hospedeService.buscarHospedesPorNome(nome);
     }
 
     @Operation(summary = "Busca todos os hóspedes", method = "GET")
-    @GetMapping("/")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<HospedeDTO> buscarTodosHospedes() {
         return hospedeService.buscarTodosHospedes();

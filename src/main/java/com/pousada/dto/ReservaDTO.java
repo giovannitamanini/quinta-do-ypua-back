@@ -16,17 +16,13 @@ public class ReservaDTO {
 
     private Long id;
 
-    private String codigoReserva;
-
     private HospedeEntity hospede;
 
     private AcomodacaoEntity acomodacao;
 
-    private LocalDate dataInicial;
+    private LocalDate dataReserva;
 
     private Integer qtdDiarias;
-
-    private BigDecimal valorDiaria;
 
     private BigDecimal valorTotal;
 

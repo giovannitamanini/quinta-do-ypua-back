@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class AcomodacaoDTO {
@@ -16,12 +17,11 @@ public class AcomodacaoDTO {
 
     private BigDecimal valorDiaria;
 
-    private Integer quantidadeHospedes;
-
-    private Boolean disponivel = true;
+    private Integer qtdHospedes;
 
     private LocalDateTime dataCriacao;
 
     private LocalDateTime dataAtualizacao;
 
+    private List<ComodidadeDTO> comodidades;
 }

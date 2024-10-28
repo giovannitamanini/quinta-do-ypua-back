@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -25,16 +26,21 @@ public class AcomodacaoEntity {
     @Column(name = "valor_diaria", nullable = false)
     private BigDecimal valorDiaria;
 
-    @Column(name = "quantidade_hospedes", nullable = false)
+    @Column(name = "qtd_hospedes", nullable = false)
     private Integer quantidadeHospedes;
-
-    @Column(name = "disponivel", nullable = false)
-    private Boolean disponivel = true;
 
     @Column(name = "data_criacao", updatable = false)
     private LocalDateTime dataCriacao;
 
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
+
+    @ManyToMany
+    @JoinTable(
+        name = "acomodacao_comodidade",
+        joinColumns = @JoinColumn(name = "id_acomodacao"),
+        inverseJoinColumns = @JoinColumn(name = "id_comodidade")
+    )
+    private List<ComodidadeEntity> comodidades;
 
 }

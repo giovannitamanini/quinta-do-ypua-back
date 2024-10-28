@@ -18,11 +18,10 @@ CREATE TABLE IF NOT EXISTS funcao (
 );
 
 CREATE TABLE IF NOT EXISTS usuario_funcao (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    usuario_id INT NOT NULL,
-    funcao_id INT NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES usuario(id),
-    FOREIGN KEY (funcao_id) REFERENCES funcao(id)
+    id_usuario INT NOT NULL,
+    id_funcao INT NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id),
+    FOREIGN KEY (id_funcao) REFERENCES funcao(id)
 );
 
 CREATE TABLE IF NOT EXISTS hospede (
@@ -33,7 +32,8 @@ CREATE TABLE IF NOT EXISTS hospede (
     email VARCHAR(100) NOT NULL UNIQUE,
     telefone VARCHAR(15),
     cep VARCHAR(10),
-    endereco VARCHAR(100),
+    logradouro VARCHAR(100), //logradouro, bairro
+    bairro VARCHAR(100),
     cidade VARCHAR(45),
     estado VARCHAR(45),
     pais VARCHAR(45) DEFAULT 'Brasil',
@@ -46,40 +46,37 @@ CREATE TABLE IF NOT EXISTS acomodacao (
     nome VARCHAR(100) NOT NULL,
     descricao TEXT,
     valor_diaria DECIMAL(10,2) NOT NULL,
-    quantidade_hospedes INT NOT NULL CHECK (quantidade_hospedes > 0),
-    disponivel BOOLEAN DEFAULT TRUE,
+    qtd_hospedes INT NOT NULL CHECK (qtd_hospedes > 0),
     data_criacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     data_atualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS item (
+CREATE TABLE IF NOT EXISTS comodidade ( //comodidade talvez
     id INT PRIMARY KEY AUTO_INCREMENT,
     descricao VARCHAR(100) NOT NULL,
-    tipo VARCHAR(50),
+    tipo ENUM('MOBÍLIA', 'ELETRODOMÉSTICOS', 'UTENSÍLIOS', 'OUTROS') NOT NULL,
     data_criacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     data_atualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS acomodacao_item (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS acomodacao_comodidade (
     id_acomodacao INT NOT NULL,
-    id_item INT NOT NULL,
-    quantidade_item INT NOT NULL CHECK (quantidade_item > 0),
-    data_adicionado TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    id_comodidade INT NOT NULL,
+    qtd_comodidade INT NOT NULL CHECK (qtd_comodidade > 0),
+    data_criacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    data_atualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     FOREIGN KEY (id_acomodacao) REFERENCES acomodacao(id),
-    FOREIGN KEY (id_item) REFERENCES item(id)
+    FOREIGN KEY (id_item) REFERENCES comodidade(id)
 );
 
 CREATE TABLE IF NOT EXISTS reserva (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    codigo_reserva VARCHAR(20) UNIQUE NOT NULL,
     id_hospede BIGINT NOT NULL,
     id_acomodacao INT NOT NULL,
-    data_inicial DATE NOT NULL,
+    data_reserva DATE NOT NULL,
     qtd_diarias INT NOT NULL CHECK (qtd_diarias > 0),
-    valor_diaria DECIMAL(10,2) NOT NULL,
     valor_total DECIMAL(12,2) NOT NULL,
-    status_reserva ENUM('PENDENTE', 'EM_ANDAMENTO', 'FINALIZADA', 'CANCELADA') NOT NULL,
+    status_reserva ENUM('PENDENTE', 'EM ANDAMENTO', 'FINALIZADA', 'CANCELADA') NOT NULL,
     status_pagamento ENUM('PENDENTE', 'PAGO', 'CANCELADO') NOT NULL,
     data_check_in DATE,
     data_check_out DATE,

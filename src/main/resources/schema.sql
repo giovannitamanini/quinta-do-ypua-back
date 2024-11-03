@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS acomodacao_comodidade (
     data_criacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     data_atualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_acomodacao) REFERENCES acomodacao(id),
-    FOREIGN KEY (id_item) REFERENCES comodidade(id)
+    FOREIGN KEY (id_comodidade) REFERENCES comodidade(id)
 );
 
 CREATE TABLE IF NOT EXISTS reserva (

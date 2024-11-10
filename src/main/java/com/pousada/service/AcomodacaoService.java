@@ -26,14 +26,12 @@ public class AcomodacaoService {
 
     public AcomodacaoDTO criarAcomodacao(AcomodacaoDTO acomodacaoDTO) {
         AcomodacaoEntity acomodacaoEntity = modelMapper.map(acomodacaoDTO, AcomodacaoEntity.class);
-        acomodacaoEntity.setComodidades(acomodacaoDTO.getComodidades());
         AcomodacaoEntity acomodacaoEntitySalva = acomodacaoRepository.save(acomodacaoEntity);
         return modelMapper.map(acomodacaoEntitySalva, AcomodacaoDTO.class);
     }
 
     public AcomodacaoDTO atualizarAcomodacao(AcomodacaoDTO acomodacaoDTO) {
         AcomodacaoEntity acomodacaoEntity = modelMapper.map(acomodacaoDTO, AcomodacaoEntity.class);
-        acomodacaoEntity.setComodidades(acomodacaoDTO.getComodidades());
         AcomodacaoEntity acomodacaoEntitySalva = acomodacaoRepository.save(acomodacaoEntity);
         return modelMapper.map(acomodacaoEntitySalva, AcomodacaoDTO.class);
     }

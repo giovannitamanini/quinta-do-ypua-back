@@ -14,20 +14,19 @@ public class AcomodacaoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "nome", nullable = false, length = 100)
+    @Column(nullable = false)
     private String nome;
 
-    @Column(name = "descricao", columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT") //?
     private String descricao;
 
     @Column(name = "valor_diaria", nullable = false)
     private BigDecimal valorDiaria;
 
     @Column(name = "qtd_hospedes", nullable = false)
-    private Integer quantidadeHospedes;
+    private Integer qtdHospedes;
 
     @Column(name = "data_criacao", updatable = false)
     private LocalDateTime dataCriacao;

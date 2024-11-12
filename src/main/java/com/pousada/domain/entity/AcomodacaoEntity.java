@@ -27,7 +27,7 @@ public class AcomodacaoEntity {
     private BigDecimal valorDiaria;
 
     @Column(name = "qtd_hospedes", nullable = false)
-    private Integer quantidadeHospedes;
+    private Integer qtdHospedes;
 
     @Column(name = "data_criacao", updatable = false)
     private LocalDateTime dataCriacao;

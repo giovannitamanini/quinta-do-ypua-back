@@ -3,25 +3,26 @@ CREATE DATABASE IF NOT EXISTS pousada;
 USE pousada;
 
 CREATE TABLE IF NOT EXISTS usuario (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    usuario VARCHAR(45) NOT NULL UNIQUE,
-    senha VARCHAR(60) NOT NULL,
-    ativo BOOLEAN DEFAULT TRUE,
-    email VARCHAR(100),
-    criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  id int(11) NOT NULL AUTO_INCREMENT,
+  usuario varchar(45) NOT NULL,
+  senha varchar(64) NOT NULL,
+  ativo tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS funcao (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(45) NOT NULL UNIQUE
+CREATE TABLE IF NOT EXISTS permissao (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  nome varchar(45) NOT NULL,
+  PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS usuario_funcao (
-    id_usuario INT NOT NULL,
-    id_funcao INT NOT NULL,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id),
-    FOREIGN KEY (id_funcao) REFERENCES funcao(id)
+CREATE TABLE IF NOT EXISTS usuario_permissao (
+  id_usuario int(11) NOT NULL,
+  id_permissao int(11) NOT NULL,
+  KEY user_fk_idx (id_usuario),
+  KEY role_fk_idx (id_permissao),
+  CONSTRAINT role_fk FOREIGN KEY (id_permissao) REFERENCES permissao(id),
+  CONSTRAINT user_fk FOREIGN KEY (id_usuario) REFERENCES usuario(id)
 );
 
 CREATE TABLE IF NOT EXISTS hospede (

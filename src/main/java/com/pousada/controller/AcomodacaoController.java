@@ -49,7 +49,7 @@ public class AcomodacaoController {
     }
 
     @Operation(summary = "Busca todas as acomodações", method = "GET")
-    @GetMapping("/")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<AcomodacaoDTO> buscarTodasAcomodacoes() {
        return acomodacaoService.buscarTodasAcomodacoes();

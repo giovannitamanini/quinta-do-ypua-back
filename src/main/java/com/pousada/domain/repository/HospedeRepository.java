@@ -13,6 +13,8 @@ public interface HospedeRepository extends CrudRepository<HospedeEntity, Long> {
 
     List<HospedeEntity> findAll();
 
+//    List<HospedeEntity> findByNome(String nome);
+
     @Query(value = "SELECT * FROM hospede WHERE nome = :nome",
         countQuery = "SELECT COUNT(*) FROM hospede WHERE nome = :nome",
         nativeQuery = true)

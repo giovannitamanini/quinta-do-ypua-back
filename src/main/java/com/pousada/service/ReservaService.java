@@ -32,26 +32,15 @@ public class ReservaService {
         if (existeReservaNoPeriodo(reservaDTO)) {
             throw new AcomodacaoOcupadaException("A acomodação requisitada já possui reserva no período solicitado!");
         }
-
         ReservaEntity reservaEntity = modelMapper.map(reservaDTO, ReservaEntity.class);
-        reservaEntity.setQtdDiarias((int) ChronoUnit.DAYS.between(reservaEntity.getDataCheckIn(), reservaEntity.getDataCheckOut()));
-        BigDecimal custoDiariaAcomodacao = acomodacaoRepository.buscarValorDiariaPorId(reservaEntity.getAcomodacao());
-        BigDecimal custoReserva = custoDiariaAcomodacao.multiply(BigDecimal.valueOf(reservaEntity.getQtdDiarias()));
-        reservaEntity.setValorTotal(custoReserva);
         ReservaEntity reservaEntitySalva = reservaRepository.save(reservaEntity);
 
         return modelMapper.map(reservaEntitySalva, ReservaDTO.class);
     }
 
     public ReservaDTO atualizarReserva(ReservaDTO reservaDTO) {
-
         ReservaEntity reservaEntity = modelMapper.map(reservaDTO, ReservaEntity.class);
-        reservaEntity.setQtdDiarias((int) ChronoUnit.DAYS.between(reservaEntity.getDataCheckIn(), reservaEntity.getDataCheckOut()));
-        BigDecimal custoDiariaAcomodacao = acomodacaoRepository.buscarValorDiariaPorId(reservaEntity.getAcomodacao());
-        BigDecimal custoReserva = custoDiariaAcomodacao.multiply(BigDecimal.valueOf(reservaEntity.getQtdDiarias()));
-        reservaEntity.setValorTotal(custoReserva);
         ReservaEntity reservaEntitySalva = reservaRepository.save(reservaEntity);
-
         return modelMapper.map(reservaEntitySalva, ReservaDTO.class);
     }
 
@@ -93,7 +82,7 @@ public class ReservaService {
 
     private boolean existeReservaNoPeriodo(ReservaDTO novaReserva) {
         ReservaEntity reservaEntity = reservaRepository.buscarReservaPorAcomodacaoEPeriodo(
-                novaReserva.getAcomodacao(),
+                novaReserva.getIdAcomodacao(),
                 novaReserva.getDataCheckIn(),
                 novaReserva.getDataCheckOut()
         );

@@ -17,13 +17,11 @@ public class ReservaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_hospede", nullable = false)
-    private HospedeEntity hospede;
+    @Column(name = "id_hospede", nullable = false)
+    private Integer idHospede;
 
-    @ManyToOne
-    @JoinColumn(name = "id_acomodacao", nullable = false)
-    private AcomodacaoEntity acomodacao;
+    @Column(name = "id_acomodacao", nullable = false)
+    private Integer idAcomodacao;
 
     @Column(name = "data_reserva", nullable = false)
     private LocalDate dataReserva;

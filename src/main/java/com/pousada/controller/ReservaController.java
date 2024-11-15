@@ -1,10 +1,14 @@
 package com.pousada.controller;
 
+import com.pousada.dto.HospedeDTO;
 import com.pousada.dto.ReservaDTO;
 import com.pousada.service.ReservaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +56,15 @@ public class ReservaController {
     @ResponseStatus(HttpStatus.OK)
     public List<ReservaDTO> buscarTodasReservas() {
         return reservaService.buscarTodasReservas();
+    }
+
+    @Operation(summary = "Busca todas as comodidades com paginação", method = "GET")
+    @GetMapping("/paginated")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<ReservaDTO> buscarReservasPaginadas(@RequestParam(defaultValue = "0") int page,
+                                                    @RequestParam(defaultValue = "20") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return reservaService.buscarReservasPaginadas(pageable);
     }
 
     @Operation(summary = "Busca todas as reservas que estão com status 'EM_ESPERA'", method = "GET")

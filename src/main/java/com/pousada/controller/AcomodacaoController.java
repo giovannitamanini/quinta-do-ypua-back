@@ -7,6 +7,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +47,8 @@ public class AcomodacaoController {
             acomodacaoService.deletarAcomodacaoPorId(id);
             return ResponseEntity.noContent().build();
         } catch (DataIntegrityViolationException e) {
-            // Exceção gerada quando há uma violação de integridade, como a associação com uma reserva
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Não é possível excluir a acomodação, pois ela está associada a uma reserva.");
+                    .body("Não é possível excluir uma acomodação que está associada a uma reserva.");
         }
     }
 
@@ -62,6 +64,15 @@ public class AcomodacaoController {
     @ResponseStatus(HttpStatus.OK)
     public List<AcomodacaoDTO> buscarTodasAcomodacoes() {
        return acomodacaoService.buscarTodasAcomodacoes();
+    }
+
+    @Operation(summary = "Busca todas as acomodações com paginação", method = "GET")
+    @GetMapping("/paginated")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<AcomodacaoDTO> buscarAcomodacoesPaginadas(@RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "20") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return acomodacaoService.buscarAcomodacoesPaginadas(pageable);
     }
 
 }

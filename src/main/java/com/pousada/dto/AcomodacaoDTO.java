@@ -29,4 +29,5 @@ public class AcomodacaoDTO {
     private LocalDateTime dataAtualizacao;
 
     private List<ComodidadeEntity> comodidades;
+
 }

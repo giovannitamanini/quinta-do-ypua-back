@@ -1,14 +1,16 @@
 package com.pousada.dto;
 
+import com.pousada.domain.entity.AcomodacaoEntity;
 import com.pousada.enums.TipoComodidadeEnum;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class ComodidadeDTO {
 
-    private Long id;
+    private Integer id;
 
     private String descricao;
 
@@ -17,4 +19,7 @@ public class ComodidadeDTO {
     private LocalDateTime dataCriacao;
 
     private LocalDateTime dataAtualizacao;
+
+    private List<AcomodacaoDTO> comodidades;
+
 }

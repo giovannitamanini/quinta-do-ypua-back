@@ -8,28 +8,27 @@ import com.pousada.dto.AcomodacaoDTO;
 import com.pousada.dto.HospedeDTO;
 import com.pousada.exception.AcomodacaoNaoEncontradaException;
 import com.pousada.exception.HospedeNaoEncontradoException;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class AcomodacaoService {
 
     private final ModelMapper modelMapper;
     private final AcomodacaoRepository acomodacaoRepository;
-
     private final ReservaRepository reservaRepository;
 
-    public AcomodacaoService(ModelMapper modelMapper, AcomodacaoRepository acomodacaoRepository, ReservaRepository reservaRepository) {
-        this.modelMapper = modelMapper;
-        this.acomodacaoRepository = acomodacaoRepository;
-        this.reservaRepository = reservaRepository;
-    }
-
     public AcomodacaoDTO criarAcomodacao(AcomodacaoDTO acomodacaoDTO) {
+//        AcomodacaoEntity acomodacaoEntity = AcomodacaoEntity.from(acomodacaoDTO);
+
         AcomodacaoEntity acomodacaoEntity = modelMapper.map(acomodacaoDTO, AcomodacaoEntity.class);
         AcomodacaoEntity acomodacaoEntitySalva = acomodacaoRepository.save(acomodacaoEntity);
         return modelMapper.map(acomodacaoEntitySalva, AcomodacaoDTO.class);
@@ -42,12 +41,11 @@ public class AcomodacaoService {
     }
 
     public void deletarAcomodacaoPorId(Integer id) {
-        boolean acomodacaoExiste = acomodacaoRepository.existsById(id);
-
-        if (acomodacaoExiste) {
+        if (acomodacaoRepository.existsById(id)) {
+            if(verificarAssociacaoComReserva(id)){
+                throw new DataIntegrityViolationException("Acomodação associada a uma reserva");
+            }
             acomodacaoRepository.deleteById(id);
-        } else if (verificarAssociacaoComReserva(id)) {
-            throw new DataIntegrityViolationException("Acomodação associada a uma reserva");
         } else {
             throw new AcomodacaoNaoEncontradaException("A acomodação com o ID " + id + " não existe.");
         }
@@ -68,8 +66,12 @@ public class AcomodacaoService {
                 .collect(Collectors.toList());
     }
 
+    public Page<AcomodacaoDTO> buscarAcomodacoesPaginadas(Pageable pageable) {
+        Page<AcomodacaoEntity> page = acomodacaoRepository.findAll(pageable);
+        return page.map(acomodacaoEntity -> modelMapper.map(acomodacaoEntity, AcomodacaoDTO.class));
+    }
+
     private boolean verificarAssociacaoComReserva(Integer id) {
-        // Lógica para verificar se a acomodação está associada a uma reserva
         return reservaRepository.existsByIdAcomodacao(id);
     }
 

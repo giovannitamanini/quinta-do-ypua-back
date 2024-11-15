@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 public class ReservaDTO {
 
-    private Long id;
+    private Integer id;
 
     private Integer idHospede;
 

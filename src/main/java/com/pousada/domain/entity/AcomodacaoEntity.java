@@ -1,11 +1,14 @@
 package com.pousada.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.pousada.dto.AcomodacaoDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -19,7 +22,7 @@ public class AcomodacaoEntity {
     @Column(nullable = false)
     private String nome;
 
-    @Column(columnDefinition = "TEXT") //?
+    @Column(columnDefinition = "TEXT")
     private String descricao;
 
     @Column(name = "valor_diaria", nullable = false)
@@ -40,6 +43,7 @@ public class AcomodacaoEntity {
         joinColumns = @JoinColumn(name = "id_acomodacao"),
         inverseJoinColumns = @JoinColumn(name = "id_comodidade")
     )
+    @JsonManagedReference
     private List<ComodidadeEntity> comodidades;
 
 }

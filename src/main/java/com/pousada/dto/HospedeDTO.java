@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 public class HospedeDTO {
 
-    private Long id;
+    private Integer id;
 
     private String nome;
 

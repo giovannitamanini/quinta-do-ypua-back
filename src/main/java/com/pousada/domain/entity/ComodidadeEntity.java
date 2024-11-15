@@ -1,6 +1,8 @@
 package com.pousada.domain.entity;
 
-import com.pousada.enums.StatusReservaEnum;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pousada.dto.ComodidadeDTO;
 import com.pousada.enums.TipoComodidadeEnum;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -15,7 +17,7 @@ public class ComodidadeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false)
     private String descricao;
@@ -29,6 +31,10 @@ public class ComodidadeEntity {
 
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
+
+    @ManyToMany(mappedBy = "comodidades", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<AcomodacaoEntity> acomodacoes;
 
 }
 

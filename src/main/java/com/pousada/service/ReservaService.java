@@ -1,13 +1,18 @@
 package com.pousada.service;
 
+import com.pousada.domain.entity.ComodidadeEntity;
 import com.pousada.domain.entity.ReservaEntity;
 import com.pousada.domain.repository.AcomodacaoRepository;
 import com.pousada.domain.repository.ReservaRepository;
+import com.pousada.dto.ComodidadeDTO;
 import com.pousada.dto.ReservaDTO;
 import com.pousada.enums.StatusReservaEnum;
 import com.pousada.exception.AcomodacaoOcupadaException;
 import com.pousada.exception.ReservaNaoEncontradaException;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,18 +20,13 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class ReservaService {
 
     private final ModelMapper modelMapper;
     private final ReservaRepository reservaRepository;
     private final AcomodacaoRepository acomodacaoRepository;
-
-    public ReservaService(ModelMapper modelMapper, ReservaRepository reservaRepository, AcomodacaoRepository acomodacaoRepository) {
-        this.modelMapper = modelMapper;
-        this.reservaRepository = reservaRepository;
-        this.acomodacaoRepository = acomodacaoRepository;
-    }
 
     public ReservaDTO criarReserva(ReservaDTO reservaDTO) {
         if (existeReservaNoPeriodo(reservaDTO)) {
@@ -45,9 +45,7 @@ public class ReservaService {
     }
 
     public void deletarReservaPorId(Long id) {
-        boolean reservaExiste = reservaRepository.existsById(id);
-
-        if (reservaExiste) {
+        if (reservaRepository.existsById(id)) {
             reservaRepository.deleteById(id);
         } else {
             throw new ReservaNaoEncontradaException("A reserva com o ID " + id + " não existe.");
@@ -67,6 +65,11 @@ public class ReservaService {
         return reservaEntities.stream()
                 .map(reservaEntity -> modelMapper.map(reservaEntity, ReservaDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public Page<ReservaDTO> buscarReservasPaginadas(Pageable pageable) {
+        Page<ReservaEntity> page = reservaRepository.findAll(pageable);
+        return page.map(reservaEntity -> modelMapper.map(reservaEntity, ReservaDTO.class));
     }
 
     public List<ReservaDTO> buscarReservasEmEspera() {

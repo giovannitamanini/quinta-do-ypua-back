@@ -15,11 +15,7 @@ public class ReservaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-
-    @Column(name = "codigo_reserva", nullable = false, unique = true, length = 20)
-    private String codigoReserva;
 
     @ManyToOne
     @JoinColumn(name = "id_hospede", nullable = false)
@@ -29,14 +25,11 @@ public class ReservaEntity {
     @JoinColumn(name = "id_acomodacao", nullable = false)
     private AcomodacaoEntity acomodacao;
 
-    @Column(name = "data_inicial", nullable = false)
-    private LocalDate dataInicial;
+    @Column(name = "data_reserva", nullable = false)
+    private LocalDate dataReserva;
 
     @Column(name = "qtd_diarias", nullable = false)
     private Integer qtdDiarias;
-
-    @Column(name = "valor_diaria", nullable = false)
-    private BigDecimal valorDiaria;
 
     @Column(name = "valor_total", nullable = false)
     private BigDecimal valorTotal;

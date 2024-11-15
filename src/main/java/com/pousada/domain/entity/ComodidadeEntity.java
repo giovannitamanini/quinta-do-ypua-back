@@ -1,25 +1,28 @@
 package com.pousada.domain.entity;
 
+import com.pousada.enums.StatusReservaEnum;
+import com.pousada.enums.TipoComodidadeEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name = "item")
+@Table(name = "comodidade")
 public class ComodidadeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "descricao", nullable = false, length = 100)
+    @Column(nullable = false)
     private String descricao;
 
-    @Column(name = "tipo", length = 50)
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoComodidadeEnum tipo;
 
     @Column(name = "data_criacao", updatable = false)
     private LocalDateTime dataCriacao;

@@ -47,7 +47,7 @@ public class ReservaController {
     }
 
     @Operation(summary = "Busca todas as reservas", method = "GET")
-    @GetMapping("/")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<ReservaDTO> buscarTodasReservas() {
         return reservaService.buscarTodasReservas();

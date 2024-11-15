@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Entity(name = "hospede")
@@ -12,37 +13,48 @@ public class HospedeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "nome", nullable = false, length = 45)
+    @Column(nullable = false)
     private String nome;
 
-    @Column(name = "sobrenome", nullable = false, length = 45)
+    @Column(nullable = false)
     private String sobrenome;
 
-    @Column(name = "cpf", nullable = false, unique = true, length = 14)
+    @Column(nullable = false, unique = true)
     private String cpf;
 
-    @Column(name = "email", nullable = false, unique = true, length = 100)
+    @Column(name = "data_nascimento", nullable = false)
+    private Date dataNascimento;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "telefone", length = 15)
+    @Column
     private String telefone;
 
-    @Column(name = "cep", length = 10)
+    @Column
     private String cep;
 
-    @Column(name = "endereco", length = 100)
-    private String endereco;
+    @Column
+    private String logradouro;
 
-    @Column(name = "cidade", length = 45)
+    @Column
+    private String numero;
+
+    @Column
+    private String complemento;
+
+    @Column
+    private String bairro;
+
+    @Column
     private String cidade;
 
-    @Column(name = "estado", length = 45)
+    @Column
     private String estado;
 
-    @Column(name = "pais", length = 45, columnDefinition = "VARCHAR(45) DEFAULT 'Brasil'")
+    @Column(columnDefinition = "VARCHAR(45) DEFAULT 'Brasil'")
     private String pais;
 
     @Column(name = "data_criacao", updatable = false)

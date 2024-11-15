@@ -3,11 +3,13 @@ package com.pousada.service;
 import com.pousada.domain.entity.AcomodacaoEntity;
 import com.pousada.domain.entity.HospedeEntity;
 import com.pousada.domain.repository.AcomodacaoRepository;
+import com.pousada.domain.repository.ReservaRepository;
 import com.pousada.dto.AcomodacaoDTO;
 import com.pousada.dto.HospedeDTO;
 import com.pousada.exception.AcomodacaoNaoEncontradaException;
 import com.pousada.exception.HospedeNaoEncontradoException;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,9 +21,12 @@ public class AcomodacaoService {
     private final ModelMapper modelMapper;
     private final AcomodacaoRepository acomodacaoRepository;
 
-    public AcomodacaoService(ModelMapper modelMapper, AcomodacaoRepository acomodacaoRepository) {
+    private final ReservaRepository reservaRepository;
+
+    public AcomodacaoService(ModelMapper modelMapper, AcomodacaoRepository acomodacaoRepository, ReservaRepository reservaRepository) {
         this.modelMapper = modelMapper;
         this.acomodacaoRepository = acomodacaoRepository;
+        this.reservaRepository = reservaRepository;
     }
 
     public AcomodacaoDTO criarAcomodacao(AcomodacaoDTO acomodacaoDTO) {
@@ -41,6 +46,8 @@ public class AcomodacaoService {
 
         if (acomodacaoExiste) {
             acomodacaoRepository.deleteById(id);
+        } else if (verificarAssociacaoComReserva(id)) {
+            throw new DataIntegrityViolationException("Acomodação associada a uma reserva");
         } else {
             throw new AcomodacaoNaoEncontradaException("A acomodação com o ID " + id + " não existe.");
         }
@@ -59,6 +66,11 @@ public class AcomodacaoService {
         return acomodacaoEntities.stream()
                 .map(acomodacaoEntity -> modelMapper.map(acomodacaoEntity, AcomodacaoDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    private boolean verificarAssociacaoComReserva(Integer id) {
+        // Lógica para verificar se a acomodação está associada a uma reserva
+        return reservaRepository.existsByIdAcomodacao(id);
     }
 
 }

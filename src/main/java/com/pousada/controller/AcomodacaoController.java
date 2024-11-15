@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,8 +39,15 @@ public class AcomodacaoController {
     @Operation(summary = "Faz a exclusão do cadastro de uma acomodação", method = "DELETE")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletarAcomodacaoPorId(@PathVariable Integer id) {
-        acomodacaoService.deletarAcomodacaoPorId(id);
+    public ResponseEntity<String> deletarAcomodacaoPorId(@PathVariable Integer id) {
+        try {
+            acomodacaoService.deletarAcomodacaoPorId(id);
+            return ResponseEntity.noContent().build();
+        } catch (DataIntegrityViolationException e) {
+            // Exceção gerada quando há uma violação de integridade, como a associação com uma reserva
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Não é possível excluir a acomodação, pois ela está associada a uma reserva.");
+        }
     }
 
     @Operation(summary = "Busca acomodação a partir do Id", method = "GET")

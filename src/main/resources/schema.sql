@@ -19,10 +19,7 @@ CREATE TABLE IF NOT EXISTS permissao (
 CREATE TABLE IF NOT EXISTS usuario_permissao (
   id_usuario int(11) NOT NULL,
   id_permissao int(11) NOT NULL,
-  KEY user_fk_idx (id_usuario),
-  KEY role_fk_idx (id_permissao),
-  CONSTRAINT role_fk FOREIGN KEY (id_permissao) REFERENCES permissao(id),
-  CONSTRAINT user_fk FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+  PRIMARY KEY (id_usuario, id_permissao)
 );
 
 CREATE TABLE IF NOT EXISTS hospede (

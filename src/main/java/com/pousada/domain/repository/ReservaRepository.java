@@ -29,4 +29,6 @@ public interface ReservaRepository extends CrudRepository<ReservaEntity, Long> {
     @Query(value = "SELECT * FROM reserva WHERE status_reserva = 'EM_ESPERA'",
             nativeQuery = true)
     List<ReservaEntity> buscarReservasEmEspera();
+
+    Boolean existsByIdAcomodacao(Integer id);
 }

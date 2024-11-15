@@ -3,23 +3,10 @@ CREATE DATABASE IF NOT EXISTS pousada;
 USE pousada;
 
 CREATE TABLE IF NOT EXISTS usuario (
-  id int(11) NOT NULL AUTO_INCREMENT,
-  usuario varchar(45) NOT NULL,
-  senha varchar(64) NOT NULL,
-  ativo tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS permissao (
-  id int(11) NOT NULL AUTO_INCREMENT,
-  nome varchar(45) NOT NULL,
-  PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS usuario_permissao (
-  id_usuario int(11) NOT NULL,
-  id_permissao int(11) NOT NULL,
-  PRIMARY KEY (id_usuario, id_permissao)
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(45) NOT NULL,
+    password VARCHAR(20) NOT NULL,
+    email VARCHAR(45) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS hospede (

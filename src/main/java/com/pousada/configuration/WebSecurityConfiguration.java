@@ -32,7 +32,8 @@ public class WebSecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable()) // Desabilita CSRF
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/signup", "/login").permitAll() // Rotas públicas
+                        .requestMatchers("/signup", "/login").permitAll()// Rotas públicas
+                        .requestMatchers("/home", "/", "/dashboard","/acomodacao", "/comodidade", "/hospede", "/reserva", "/api").authenticated()
                         .anyRequest().authenticated() // Qualquer outra rota exige autenticação
                 )
                 .sessionManagement(session -> session

@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS acomodacao_comodidade (
 
 CREATE TABLE IF NOT EXISTS reserva (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    id_hospede BIGINT NOT NULL,
+    id_hospede INT NOT NULL,
     id_acomodacao INT NOT NULL,
     data_reserva DATE NOT NULL,
     qtd_diarias INT NOT NULL CHECK (qtd_diarias > 0),

@@ -1,5 +1,6 @@
 package com.pousada.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pousada.domain.entity.AcomodacaoEntity;
 import com.pousada.domain.entity.HospedeEntity;
 import com.pousada.enums.StatusPagamentoEnum;
@@ -16,9 +17,9 @@ public class ReservaDTO {
 
     private Long id;
 
-    private HospedeEntity hospede;
+    private Integer idHospede;
 
-    private AcomodacaoEntity acomodacao;
+    private Integer idAcomodacao;
 
     private LocalDate dataReserva;
 

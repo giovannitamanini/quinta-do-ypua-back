@@ -22,7 +22,7 @@ public interface ReservaRepository extends CrudRepository<ReservaEntity, Long> {
             "OR :dataCheckOut > data_check_in AND :dataCheckOut < data_check_out)",
             nativeQuery = true)
     ReservaEntity buscarReservaPorAcomodacaoEPeriodo(
-            @Param("idAcomodacao") AcomodacaoEntity idAcomodacao,
+            @Param("idAcomodacao") Integer idAcomodacao,
             @Param("dataCheckIn") LocalDate dataCheckIn,
             @Param("dataCheckOut") LocalDate dataCheckOut);
 

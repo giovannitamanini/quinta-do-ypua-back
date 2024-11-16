@@ -1,14 +1,12 @@
 package com.pousada.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.pousada.dto.AcomodacaoDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Entity

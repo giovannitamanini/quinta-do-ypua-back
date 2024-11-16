@@ -1,8 +1,6 @@
 package com.pousada.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pousada.dto.ComodidadeDTO;
 import com.pousada.enums.TipoComodidadeEnum;
 import jakarta.persistence.*;
 import lombok.Data;

@@ -1,7 +1,8 @@
 package com.pousada.controller;
 
-import com.pousada.dto.HospedeDTO;
 import com.pousada.dto.ReservaDTO;
+import com.pousada.exception.AcomodacaoOcupadaException;
+import com.pousada.exception.ReservaEmAndamentoOuFinalizadaException;
 import com.pousada.service.ReservaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,29 +27,50 @@ public class ReservaController {
     @Operation(summary = "Cadastra uma nova reserva", method = "POST")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ReservaDTO criarReserva(@RequestBody ReservaDTO reserva) {
-        return reservaService.criarReserva(reserva);
+    public ResponseEntity<String> criarReserva(@RequestBody ReservaDTO reserva) {
+        try {
+            reservaService.criarReserva(reserva);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Reserva criada com sucesso");
+        } catch (AcomodacaoOcupadaException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("A acomodação requisitada já possui reserva no período solicitado!");
+        }
     }
 
     @Operation(summary = "Atualiza o cadastro de uma reserva", method = "PUT")
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ReservaDTO atualizarReserva(@RequestBody ReservaDTO reservaDTO) {
-        return reservaService.atualizarReserva(reservaDTO);
+    public ResponseEntity<String> atualizarReserva(@RequestBody ReservaDTO reservaDTO) {
+        try {
+            ReservaDTO updatedReserva = reservaService.atualizarReserva(reservaDTO);
+            return ResponseEntity.ok("Reserva atualizada com sucesso");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao atualizar reserva!");
+        }
     }
 
     @Operation(summary = "Faz a exclusão do cadastro de uma reserva", method = "DELETE")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletarReservaPorId(@PathVariable Long id) {
-        reservaService.deletarReservaPorId(id);
+    public ResponseEntity<String> deletarItemPorId(@PathVariable Integer id) {
+        try {
+            reservaService.deletarReservaPorId(id);
+            return ResponseEntity.noContent().build();
+        } catch (ReservaEmAndamentoOuFinalizadaException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Não é possível excluir uma reserva finalizada ou em andamento!");
+        }
     }
 
     @Operation(summary = "Busca uma reserva a partir do ID", method = "GET")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ReservaDTO buscarReservaPorId(@PathVariable Long id) {
-        return reservaService.buscarReservaPorId(id);
+    public ResponseEntity<ReservaDTO> buscarReservaPorId(@PathVariable Integer id) {
+        ReservaDTO reservaDTO = reservaService.buscarReservaPorId(id);
+        if (reservaDTO != null) {
+            return ResponseEntity.ok(reservaDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @Operation(summary = "Busca todas as reservas", method = "GET")

@@ -1,6 +1,5 @@
 package com.pousada.dto;
 
-import com.pousada.domain.entity.AcomodacaoEntity;
 import com.pousada.enums.TipoComodidadeEnum;
 import lombok.Data;
 

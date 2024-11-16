@@ -1,10 +1,8 @@
 package com.pousada.domain.repository;
 
-import com.pousada.domain.entity.AcomodacaoEntity;
 import com.pousada.domain.entity.ReservaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface ReservaRepository extends JpaRepository<ReservaEntity, Long> {
+public interface ReservaRepository extends JpaRepository<ReservaEntity, Integer> {
 
     List<ReservaEntity> findAll();
 

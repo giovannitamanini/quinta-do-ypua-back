@@ -1,8 +1,5 @@
 package com.pousada.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.pousada.domain.entity.AcomodacaoEntity;
-import com.pousada.domain.entity.HospedeEntity;
 import com.pousada.enums.StatusPagamentoEnum;
 import com.pousada.enums.StatusReservaEnum;
 

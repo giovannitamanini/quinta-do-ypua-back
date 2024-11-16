@@ -57,7 +57,7 @@ public class HospedeService {
     }
 
     public List<HospedeDTO> buscarHospedesPorNome(String nome) {
-        List<HospedeEntity> hospedeEntities = hospedeRepository.buscarHospedesPorNome(nome);
+        List<HospedeEntity> hospedeEntities = hospedeRepository.findByNome(nome);
 
         if (hospedeEntities.isEmpty())
             throw new HospedeNaoEncontradoException("Nenhum hóspede com o nome " + nome + " está registrado!");

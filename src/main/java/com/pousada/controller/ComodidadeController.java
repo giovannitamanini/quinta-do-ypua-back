@@ -1,8 +1,6 @@
 package com.pousada.controller;
 
-import com.pousada.dto.AcomodacaoDTO;
 import com.pousada.dto.ComodidadeDTO;
-import com.pousada.dto.HospedeDTO;
 import com.pousada.enums.TipoComodidadeEnum;
 import com.pousada.service.ComodidadeService;
 import io.swagger.v3.oas.annotations.Operation;

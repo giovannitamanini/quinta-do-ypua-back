@@ -1,10 +1,8 @@
 package com.pousada.service;
 
-import com.pousada.domain.entity.AcomodacaoEntity;
 import com.pousada.domain.entity.ComodidadeEntity;
 import com.pousada.domain.repository.AcomodacaoRepository;
 import com.pousada.domain.repository.ComodidadeRepository;
-import com.pousada.dto.AcomodacaoDTO;
 import com.pousada.dto.ComodidadeDTO;
 import com.pousada.enums.TipoComodidadeEnum;
 import com.pousada.exception.ComodidadeNaoEncontradaException;

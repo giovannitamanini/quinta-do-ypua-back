@@ -1,7 +1,10 @@
 package com.pousada.service;
 
+import com.pousada.domain.entity.HospedeEntity;
 import com.pousada.domain.entity.ReservaEntity;
+import com.pousada.domain.repository.AcomodacaoRepository;
 import com.pousada.domain.repository.ReservaRepository;
+import com.pousada.dto.HospedeDTO;
 import com.pousada.dto.ReservaDTO;
 import com.pousada.enums.StatusReservaEnum;
 import com.pousada.exception.AcomodacaoOcupadaException;
@@ -23,6 +26,7 @@ public class ReservaService {
 
     private final ModelMapper modelMapper;
     private final ReservaRepository reservaRepository;
+    private final AcomodacaoRepository acomodacaoRepository;
 
     public ReservaDTO criarReserva(ReservaDTO reservaDTO) {
         if (existeReservaNoPeriodo(reservaDTO)) {
@@ -86,7 +90,25 @@ public class ReservaService {
                 .collect(Collectors.toList());
     }
 
-    private boolean existeReservaNoPeriodo(ReservaDTO novaReserva) {
+    public Page<ReservaDTO> buscarReservasComFiltros(String acomodacao, StatusReservaEnum statusReserva, Pageable pageable) {
+        Page<ReservaEntity> page;
+
+        if (acomodacao != null && statusReserva != null) {
+            Integer idAcomodacao = acomodacaoRepository.findByNome(acomodacao).getId();
+            page = reservaRepository.buscarComFiltros(idAcomodacao, statusReserva, pageable);
+        } else if (acomodacao != null) {
+            Integer idAcomodacao = acomodacaoRepository.findByNome(acomodacao).getId();
+            page = reservaRepository.findByIdAcomodacao(idAcomodacao, pageable);
+        } else if (statusReserva != null) {
+            page = reservaRepository.findByStatusReserva(statusReserva, pageable);
+        } else {
+            page = reservaRepository.findAll(pageable);
+        }
+
+        return page.map(ReservaEntity -> modelMapper.map(ReservaEntity, ReservaDTO.class));
+    }
+
+    public boolean existeReservaNoPeriodo(ReservaDTO novaReserva) {
         ReservaEntity reservaEntity = reservaRepository.buscarReservaPorAcomodacaoEPeriodo(
                 novaReserva.getIdAcomodacao(),
                 novaReserva.getDataCheckIn(),

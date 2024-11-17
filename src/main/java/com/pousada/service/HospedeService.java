@@ -1,12 +1,9 @@
 package com.pousada.service;
 
-import com.pousada.domain.entity.ComodidadeEntity;
 import com.pousada.domain.entity.HospedeEntity;
 import com.pousada.domain.repository.HospedeRepository;
 import com.pousada.domain.repository.ReservaRepository;
-import com.pousada.dto.ComodidadeDTO;
 import com.pousada.dto.HospedeDTO;
-import com.pousada.exception.AcomodacaoNaoEncontradaException;
 import com.pousada.exception.HospedeNaoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -77,6 +74,22 @@ public class HospedeService {
 
     public Page<HospedeDTO> buscarHospedesPaginados(Pageable pageable) {
         Page<HospedeEntity> page = hospedeRepository.findAll(pageable);
+        return page.map(hospedeEntity -> modelMapper.map(hospedeEntity, HospedeDTO.class));
+    }
+
+    public Page<HospedeDTO> buscarHospedesComFiltros(String nome, String cpf, Pageable pageable) {
+        Page<HospedeEntity> page;
+
+        if (nome != null && cpf != null) {
+            page = hospedeRepository.buscarComFiltros(nome, cpf, pageable);
+        } else if (nome != null) {
+            page = hospedeRepository.findByNomeContainingOrSobrenomeContaining(nome, nome, pageable);
+        } else if (cpf != null) {
+            page = hospedeRepository.findByCpf(cpf, pageable);
+        } else {
+            page = hospedeRepository.findAll(pageable);
+        }
+
         return page.map(hospedeEntity -> modelMapper.map(hospedeEntity, HospedeDTO.class));
     }
 

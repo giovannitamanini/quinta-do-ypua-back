@@ -1,6 +1,8 @@
 package com.pousada.controller;
 
 import com.pousada.dto.ReservaDTO;
+import com.pousada.enums.StatusReservaEnum;
+import com.pousada.enums.TipoComodidadeEnum;
 import com.pousada.exception.AcomodacaoOcupadaException;
 import com.pousada.exception.ReservaEmAndamentoOuFinalizadaException;
 import com.pousada.service.ReservaService;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -80,13 +83,35 @@ public class ReservaController {
         return reservaService.buscarTodasReservas();
     }
 
-    @Operation(summary = "Busca todas as comodidades com paginação", method = "GET")
+    @Operation(summary = "Busca todas as reservas com paginação", method = "GET")
     @GetMapping("/paginated")
     @ResponseStatus(HttpStatus.OK)
     public Page<ReservaDTO> buscarReservasPaginadas(@RequestParam(defaultValue = "0") int page,
                                                     @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return reservaService.buscarReservasPaginadas(pageable);
+    }
+
+    @Operation(summary = "Busca reservas com filtros opcionais", method = "GET")
+    @GetMapping("/filter")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<ReservaDTO> buscarReservasComFiltros(@RequestParam(required = false) String acomodacao,
+                                                     @RequestParam(required = false) String statusReserva,
+                                                     @RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "20") int size) {
+
+        StatusReservaEnum tipoEnum = null;
+
+        if (statusReserva != null && !statusReserva.isEmpty()) {
+            try {
+                tipoEnum = StatusReservaEnum.valueOf(statusReserva);
+            } catch (IllegalArgumentException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tipo de comodidade inválido");
+            }
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        return reservaService.buscarReservasComFiltros(acomodacao, tipoEnum, pageable);
     }
 
     @Operation(summary = "Busca todas as reservas que estão com status 'EM_ESPERA'", method = "GET")

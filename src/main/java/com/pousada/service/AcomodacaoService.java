@@ -3,7 +3,6 @@ package com.pousada.service;
 import com.pousada.domain.entity.AcomodacaoEntity;
 import com.pousada.domain.repository.AcomodacaoRepository;
 import com.pousada.domain.repository.ReservaRepository;
-import com.pousada.domain.specification.AcomodacaoSpecification;
 import com.pousada.dto.AcomodacaoDTO;
 import com.pousada.exception.AcomodacaoNaoEncontradaException;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +24,6 @@ public class AcomodacaoService {
     private final ReservaRepository reservaRepository;
 
     public AcomodacaoDTO criarAcomodacao(AcomodacaoDTO acomodacaoDTO) {
-//        AcomodacaoEntity acomodacaoEntity = AcomodacaoEntity.from(acomodacaoDTO);
-
         AcomodacaoEntity acomodacaoEntity = modelMapper.map(acomodacaoDTO, AcomodacaoEntity.class);
         AcomodacaoEntity acomodacaoEntitySalva = acomodacaoRepository.save(acomodacaoEntity);
         return modelMapper.map(acomodacaoEntitySalva, AcomodacaoDTO.class);
@@ -70,25 +66,21 @@ public class AcomodacaoService {
         return page.map(acomodacaoEntity -> modelMapper.map(acomodacaoEntity, AcomodacaoDTO.class));
     }
 
-    public Page<AcomodacaoDTO> buscarComFiltros(String nome, Integer hospedes, Double diariaMin, Double diariaMax, Pageable pageable) {
-        Specification<AcomodacaoEntity> spec = AcomodacaoSpecification.combinarFiltros(nome, hospedes, diariaMin, diariaMax);
-        Page<AcomodacaoEntity> resultado = acomodacaoRepository.findAll(spec, pageable);
-        return resultado.map(this::toDTO);
-    }
+    public Page<AcomodacaoDTO> buscarComFiltros(String nome, String qtdHospedes, Pageable pageable) {
+        Page<AcomodacaoEntity> page;
 
-    public AcomodacaoDTO toDTO(AcomodacaoEntity acomodacaoEntity) {
-        AcomodacaoDTO dto = new AcomodacaoDTO();
 
-        dto.setId(acomodacaoEntity.getId());
-        dto.setNome(acomodacaoEntity.getNome());
-        dto.setDescricao(acomodacaoEntity.getDescricao());
-        dto.setValorDiaria(acomodacaoEntity.getValorDiaria());
-        dto.setQtdHospedes(acomodacaoEntity.getQtdHospedes());
-        dto.setDataCriacao(acomodacaoEntity.getDataCriacao());
-        dto.setDataAtualizacao(acomodacaoEntity.getDataAtualizacao());
-        dto.setComodidades(acomodacaoEntity.getComodidades());
+        if (nome != null && qtdHospedes != null) {
+            page = acomodacaoRepository.findByNomeContainingAndQtdHospedesEquals(nome, Integer.valueOf(qtdHospedes), pageable);
+        } else if (nome != null) {
+            page = acomodacaoRepository.findByNomeContainingIgnoreCase(nome, pageable);
+        } else if (qtdHospedes != null) {
+            page = acomodacaoRepository.findByQtdHospedesEquals(Integer.valueOf(qtdHospedes), pageable);
+        } else {
+            page = acomodacaoRepository.findAll(pageable);
+        }
 
-        return dto;
+        return page.map(acomodacaoEntity -> modelMapper.map(acomodacaoEntity, AcomodacaoDTO.class));
     }
 
     private boolean verificarAssociacaoComReserva(Integer id) {

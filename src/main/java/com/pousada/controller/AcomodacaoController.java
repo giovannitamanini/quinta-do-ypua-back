@@ -75,15 +75,15 @@ public class AcomodacaoController {
         return acomodacaoService.buscarAcomodacoesPaginadas(pageable);
     }
 
+    @Operation(summary = "Busca acomodações com filtros opcionais", method = "GET")
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/filter")
     public Page<AcomodacaoDTO> filtrarAcomodacoes(@RequestParam(required = false) String nome,
-                                                  @RequestParam(required = false) Double diariaMin,
-                                                  @RequestParam(required = false) Double diariaMax,
-                                                  @RequestParam(required = false) Integer hospedes,
+                                                  @RequestParam(required = false) String qtdHospedes,
                                                   @RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return acomodacaoService.buscarComFiltros(nome, hospedes, diariaMin, diariaMax, pageable);
+        return acomodacaoService.buscarComFiltros(nome, qtdHospedes, pageable);
     }
 
 }

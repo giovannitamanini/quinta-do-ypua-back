@@ -72,13 +72,25 @@ public class HospedeController {
         return hospedeService.buscarTodosHospedes();
     }
 
-    @Operation(summary = "Busca todas as comodidades com paginação", method = "GET")
+    @Operation(summary = "Busca todas os hóspedes com paginação", method = "GET")
     @GetMapping("/paginated")
     @ResponseStatus(HttpStatus.OK)
     public Page<HospedeDTO> buscarHospedesPaginados(@RequestParam(defaultValue = "0") int page,
                                                        @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return hospedeService.buscarHospedesPaginados(pageable);
+    }
+
+    @Operation(summary = "Busca hóspedes com filtros opcionais", method = "GET")
+    @GetMapping("/filter")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<HospedeDTO> buscarHospedesComFiltros(@RequestParam(required = false) String nome,
+                                                     @RequestParam(required = false) String cpf,
+                                                     @RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "20") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return hospedeService.buscarHospedesComFiltros(nome, cpf, pageable);
     }
 
 }

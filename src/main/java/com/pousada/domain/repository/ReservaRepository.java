@@ -1,7 +1,10 @@
 package com.pousada.domain.repository;
 
+import com.pousada.domain.entity.HospedeEntity;
 import com.pousada.domain.entity.ReservaEntity;
 import com.pousada.enums.StatusReservaEnum;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -37,12 +40,17 @@ public interface ReservaRepository extends JpaRepository<ReservaEntity, Integer>
     @Query("SELECT r FROM ReservaEntity r WHERE r.dataCheckIn <= :today AND r.dataCheckOut >= :today")
     List<ReservaEntity> findReservasEmAndamento(@Param("today") LocalDate today);
 
-    @Query("SELECT r.idAcomodacao, COUNT(r) FROM ReservaEntity r WHERE MONTH(r.dataCheckIn) = :mes AND YEAR(r.dataCheckIn) = :ano GROUP BY r.idAcomodacao")
-    Map<String, Integer> countReservasPorAcomodacao(@Param("mes") int mes, @Param("ano") int ano);
-
     List<ReservaEntity> findReservasByDataCheckInBetween(LocalDate startDate, LocalDate endDate);
 
     List<ReservaEntity> findReservasByDataCheckInBetweenAndStatusReservaIn(LocalDate startDate, LocalDate endDate, List<StatusReservaEnum> statuses);
 
     Boolean existsByIdAcomodacao(Integer id);
+
+    Page<ReservaEntity> findByStatusReserva(StatusReservaEnum statusReserva, Pageable pageable);
+
+    Page<ReservaEntity> findByIdAcomodacao(Integer idAcomodacao, Pageable pageable);
+
+    @Query("SELECT r FROM ReservaEntity r WHERE r.statusReserva <= :statusReserva AND r.idAcomodacao >= :acomodacao")
+    Page<ReservaEntity> buscarComFiltros(@Param("acomodacao") Integer acomodacao, @Param("statusReserva") StatusReservaEnum statusReserva, Pageable pageable);
+
 }

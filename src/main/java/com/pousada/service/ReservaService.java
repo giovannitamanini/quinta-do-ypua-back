@@ -1,10 +1,8 @@
 package com.pousada.service;
 
-import com.pousada.domain.entity.HospedeEntity;
 import com.pousada.domain.entity.ReservaEntity;
 import com.pousada.domain.repository.AcomodacaoRepository;
 import com.pousada.domain.repository.ReservaRepository;
-import com.pousada.dto.HospedeDTO;
 import com.pousada.dto.ReservaDTO;
 import com.pousada.enums.StatusReservaEnum;
 import com.pousada.exception.AcomodacaoOcupadaException;
@@ -93,11 +91,16 @@ public class ReservaService {
     public Page<ReservaDTO> buscarReservasComFiltros(String acomodacao, StatusReservaEnum statusReserva, Pageable pageable) {
         Page<ReservaEntity> page;
 
-        if (acomodacao != null && statusReserva != null) {
+        System.out.println("acomodacao " + acomodacao);
+        System.out.println("statusReserva " + statusReserva);
+
+        if (acomodacao != null && !acomodacao.equals("Todas") && statusReserva != null) {
             Integer idAcomodacao = acomodacaoRepository.findByNome(acomodacao).getId();
+            System.out.println("idAcomodacao " + idAcomodacao);
             page = reservaRepository.buscarComFiltros(idAcomodacao, statusReserva, pageable);
-        } else if (acomodacao != null) {
+        } else if (acomodacao != null && !acomodacao.equals("Todas")) {
             Integer idAcomodacao = acomodacaoRepository.findByNome(acomodacao).getId();
+            System.out.println("idAcomodacao2 " + idAcomodacao);
             page = reservaRepository.findByIdAcomodacao(idAcomodacao, pageable);
         } else if (statusReserva != null) {
             page = reservaRepository.findByStatusReserva(statusReserva, pageable);

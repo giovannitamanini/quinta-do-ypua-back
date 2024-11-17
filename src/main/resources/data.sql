@@ -21,7 +21,7 @@ VALUES
 
 INSERT IGNORE INTO acomodacao (nome, descricao, valor_diaria, qtd_hospedes)
 VALUES
-("Estacionamento para Overlands", "Área de estacionamento para veículos de grande porte.", 100.00, 0);
+("Estacionamento para Overlands", "Área de estacionamento para veículos de grande porte.", 100.00, 5);
 
 -- Tabela Comodidade
 INSERT IGNORE INTO comodidade (descricao, tipo)

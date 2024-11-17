@@ -1,6 +1,5 @@
 package com.pousada.domain.repository;
 
-import com.pousada.domain.entity.HospedeEntity;
 import com.pousada.domain.entity.ReservaEntity;
 import com.pousada.enums.StatusReservaEnum;
 import org.springframework.data.domain.Page;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface ReservaRepository extends JpaRepository<ReservaEntity, Integer> {
@@ -50,7 +48,7 @@ public interface ReservaRepository extends JpaRepository<ReservaEntity, Integer>
 
     Page<ReservaEntity> findByIdAcomodacao(Integer idAcomodacao, Pageable pageable);
 
-    @Query("SELECT r FROM ReservaEntity r WHERE r.statusReserva <= :statusReserva AND r.idAcomodacao >= :acomodacao")
+    @Query("SELECT r FROM ReservaEntity r WHERE r.statusReserva = :statusReserva AND r.idAcomodacao = :acomodacao")
     Page<ReservaEntity> buscarComFiltros(@Param("acomodacao") Integer acomodacao, @Param("statusReserva") StatusReservaEnum statusReserva, Pageable pageable);
 
 }

@@ -1,35 +1,35 @@
-package com.pousada.service;
-
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Service;
-
-import java.util.Date;
-
-@Service
-public class AuthService {
-
-    private final String SECRET_KEY = "minhaChaveSecreta";
-
-    // Método para gerar o token JWT
-    public String generateToken(String username) {
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000))  // Expira em 24 horas
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
-    }
-
-    // Método para verificar se o token é válido
-    public boolean isTokenValid(String token) {
-        try {
-            Jwts.parser()
-                    .setSigningKey(SECRET_KEY)
-                    .parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-}
+//package com.pousada.service;
+//
+//import com.pousada.domain.entity.UsuarioEntity;
+//import com.pousada.domain.repository.UsuarioRepository;
+//import com.pousada.dto.UsuarioDTO;
+//import com.pousada.exception.UsuarioJaExistenteException;
+//import lombok.RequiredArgsConstructor;
+//import org.modelmapper.ModelMapper;
+//import org.springframework.stereotype.Service;
+//
+//import java.util.Optional;
+//
+//@Service
+//@RequiredArgsConstructor
+//public class AuthService {
+//
+//    private final ModelMapper modelMapper;
+//    private final UsuarioRepository usuarioRepository;
+//
+//    public UsuarioDTO criarUsuario(UsuarioDTO usuarioDTO) {
+//        if (usuarioRepository.existsByUsuario(usuarioDTO.getUsuario())) {
+//            throw new UsuarioJaExistenteException("O nome de usuário já está sendo utilizado!");
+//        }
+//        UsuarioEntity usuarioEntity = modelMapper.map(usuarioDTO, UsuarioEntity.class);
+//        UsuarioEntity usuarioEntitySalvo = usuarioRepository.save(usuarioEntity);
+//
+//        return modelMapper.map(usuarioEntitySalvo, UsuarioDTO.class);
+//    }
+//
+//    public boolean login(UsuarioDTO usuarioDTO) {
+//        Optional<UsuarioEntity> user = usuarioRepository.findByUsuario(usuarioDTO.getUsuario());
+//        return user.isPresent() && user.get().getSenha().equals(usuarioDTO.getSenha());
+//    }
+//
+//}

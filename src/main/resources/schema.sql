@@ -4,25 +4,10 @@ USE pousada;
 
 CREATE TABLE IF NOT EXISTS usuario (
   id int(11) NOT NULL AUTO_INCREMENT,
-  usuario varchar(45) NOT NULL,
+  usuario varchar(45) NOT NULL UNIQUE,
   senha varchar(64) NOT NULL,
-  ativo tinyint(4) DEFAULT NULL,
+  ativo TINYINT(1) NOT NULL,
   PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS permissao (
-  id int(11) NOT NULL AUTO_INCREMENT,
-  nome varchar(45) NOT NULL,
-  PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS usuario_permissao (
-  id_usuario int(11) NOT NULL,
-  id_permissao int(11) NOT NULL,
-  KEY user_fk_idx (id_usuario),
-  KEY role_fk_idx (id_permissao),
-  CONSTRAINT role_fk FOREIGN KEY (id_permissao) REFERENCES permissao(id),
-  CONSTRAINT user_fk FOREIGN KEY (id_usuario) REFERENCES usuario(id)
 );
 
 CREATE TABLE IF NOT EXISTS hospede (
@@ -32,7 +17,7 @@ CREATE TABLE IF NOT EXISTS hospede (
     cpf VARCHAR(14) NOT NULL UNIQUE,
     data_nascimento DATE NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    telefone VARCHAR(15),
+    telefone VARCHAR(11),
     cep VARCHAR(10),
     logradouro VARCHAR(100),
     numero VARCHAR(45),

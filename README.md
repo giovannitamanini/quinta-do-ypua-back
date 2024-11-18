@@ -1,21 +1,49 @@
 # Back-End Quinta do Ypuã
 
-Projeto back-end para o gerenciamento de uma pousada em Java Spring Boot que segue o padrão de arquitetura de três camadas. É utilizando o banco de dados MySQL. Durante o desenvolvimento os testes foram feitos utilizando HTTP requests com o Insomnia para os endpoints da aplicação. Posteriormente a aplicação foi portada para contêineres Docker para facilitar a implantação e a execução em diferentes ambientes. Em seguida, a API foi documentada utilizando o Swagger, proporcionando uma interface intuitiva para explorar e entender os endpoints, parâmetros e respostas da aplicação, facilitando o desenvolvimento de clientes front-end e integrações de serviços.
+Este é o projeto back-end para o gerenciamento da pousada Quinta do Ypuã, desenvolvido com **Java Spring Boot** e seguindo o padrão de arquitetura de três camadas. A aplicação utiliza o banco de dados **MySQL** e foi projetada para ser facilmente implantada em diferentes ambientes usando **Docker**.
 
-## Pré-requisitos
+Durante o desenvolvimento, os testes foram realizados utilizando o **Insomnia** para enviar requisições HTTP aos endpoints da aplicação. A API foi documentada com o **Swagger**, proporcionando uma interface intuitiva para explorar e testar os endpoints, simplificando o desenvolvimento de clientes front-end e integrações de serviços.
 
-- Docker, Docker Desktop
+---
 
-## Configuração do Ambiente de Desenvolvimento
+## 🛠 Pré-requisitos
 
-- Executar na raiz do projeto o seguinte comando para a compilação do projeto e criação da imagem do container com o servidor:
+Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
+- [Docker](https://www.docker.com/)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-  ```docker build -t pousada-server .```
+---
 
-- Para a build do container com o MySQL e posterior início dos serviços definidos no docker-compose.yml, execute o seguinte comando:
+## ⚙️ Configuração do Ambiente de Desenvolvimento
 
-  ```docker-compose up```
+### 1. Clone do projeto, compilação e Criação da Imagem do Servidor
 
-- (Opcional) Ver documentação e explorar os endpoints da aplicação com o Swagger. Abrir a Swagger-UI em:
+Faça o download do projeto para o seu ambiente local:
 
-  ```http://localhost:8080/swagger-ui.html```
+```bash
+git clone <URL_DO_REPOSITORIO>
+```
+
+Entre na pasta do projeto clonado:
+```bash
+cd <NOME_DO_DIRETORIO_DO_PROJETO>
+```
+
+Na raiz do projeto, execute o comando abaixo para compilar o projeto e criar a imagem Docker do servidor:
+
+```bash
+docker build -t pousada-server .
+```
+
+Para criar o contêiner com o MySQL e iniciar todos os serviços definidos no arquivo docker-compose.yml, execute:
+```bash
+docker-compose up
+```
+
+Para explorar e testar os endpoints da aplicação, abra o navegador no seguinte endereço:
+```bash
+http://localhost:8080/swagger-ui.html
+```
+
+Siga para o projeto do front-end em:
+- [FrontEnd-Quinta do Ypuã](https://github.com/giovannitamanini/quinta-do-ypua-front)
